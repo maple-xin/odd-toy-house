@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff4d9"><meta name="description" content="千万别按玩具屋的红按钮。胶囊会逃跑，怪物会捣乱——你能把它们收回来吗？">
+<title>千万别按的玩具屋 · 古怪玩具屋</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23f12c37' d='M8 0h16v4h4v4h4v16h-4v4h-4v4H8v-4H4v-4H0V8h4V4h4z'/%3E%3Cpath fill='%23fff4d9' d='M5 10h9v12H5zm13 0h9v12h-9z'/%3E%3Cpath fill='%23111b32' d='M9 14h5v8H9zm13 0h5v8h-5z'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="game.css?v=chaos">
+</head>
+<body>
+<header class="header">
+<a class="brand" href="#game-stage" aria-label="古怪玩具屋，前往游戏"><span class="brand-face" aria-hidden="true"><i></i><i></i></span><span>古怪玩具屋<small>DON’T PUSH THE BUTTON</small></span></a>
+<div class="toolbar" aria-label="游戏控制">
+<button id="sound" class="tool-button" aria-label="开启音效" aria-pressed="false"><span aria-hidden="true">♫</span><span id="sound-label">音效</span></button>
+<button id="pause" class="tool-button" aria-label="暂停游戏"><span aria-hidden="true">Ⅱ</span><span id="pause-label">暂停</span></button>
+<button id="retry" class="tool-button" aria-label="重新开始游戏"><span aria-hidden="true">↻</span><span>重来</span></button>
+</div>
+</header>
+<main class="game-shell">
+<div class="stage-heading"><span><b class="live-dot" aria-hidden="true"></b>古怪事件 / 001</span><span class="stage-caption">好奇心，请保管好。</span></div>
+<section id="game-stage" class="game-stage" data-state="idle" aria-label="千万别按的玩具屋游戏场景">
+<canvas id="game-canvas" width="1100" height="650" tabindex="0" aria-label="游戏场景：拖动挡板阻挡胶囊，点击怪物抓住它，把胶囊拖回回收口。"></canvas>
+<div id="start-overlay" class="start-overlay">
+<div class="start-panel">
+<p class="eyebrow">ONE BUTTON. BIG TROUBLE.</p>
+<h1><span>千万</span><span class="title-red">别按<span class="title-mark">!</span></span></h1>
+<p class="challenge-copy">玩具屋好好的。<br>按下去，可就归你收拾了。</p>
+<button id="panic-button" class="panic-button"><span aria-hidden="true">!</span>别按这个按钮<span aria-hidden="true">!</span></button>
+<p class="start-note">一次手欠 · 一场限时大乱斗</p>
+</div>
+<span class="warning-stamp" aria-hidden="true">请勿<br>手欠</span>
+</div>
+<div id="pause-overlay" class="pause-overlay" hidden><div><p class="eyebrow">TAKE A BREATHER</p><h2>先喘口气。</h2><p>玩具们暂时不闹了。</p><button id="resume" class="pixel-button">继续收拾 <span aria-hidden="true">▶</span></button></div></div>
+</section>
+<section id="hud" class="hud" aria-label="游戏进度">
+<div class="hud-stat time-stat"><span class="hud-label">剩余时间</span><strong id="timer-label">30.0<span>s</span></strong></div>
+<div class="hud-stat"><span class="hud-label">胶囊回收</span><strong id="recovered-label">00</strong></div>
+<div class="hud-stat"><span class="hud-label">怪物逮捕</span><strong id="monster-label">00</strong></div>
+<div class="chaos-stat"><div class="meter-label"><span>混乱指数</span><span aria-hidden="true">✦</span></div><div class="chaos-track" role="meter" aria-label="混乱指数" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="chaos-fill"></span></div></div>
+</section>
+<div class="status-bar"><span class="status-cross" aria-hidden="true">✦</span><p id="status-message" role="status" aria-live="polite">按钮就在那儿。你应该忍得住吧？</p><button id="help-toggle" aria-expanded="false" aria-controls="instructions">怎么玩 <span aria-hidden="true">?</span></button></div>
+<section id="instructions" class="instructions" aria-label="玩法说明" hidden>
+<p><span aria-hidden="true">01</span>拖挡板，挡住胶囊</p><p><span aria-hidden="true">02</span>点怪物，把它逮住</p><p><span aria-hidden="true">03</span>把胶囊拖回回收口</p>
+</section>
+<footer><span>玩心不打烊。</span><span>NO REFUNDS FOR CURIOSITY.</span></footer>
+</main>
+<dialog id="result-dialog" aria-labelledby="end-title" aria-describedby="end-desc">
+<div class="result-header"><span class="eyebrow">THE AFTERMATH</span><span aria-hidden="true">✦</span></div>
+<h2 id="end-title">好大的烂摊子！</h2><p id="end-desc">这是你今天的手欠纪念。</p><div id="end-stats" class="end-stats"></div>
+<canvas id="postcard-canvas" width="720" height="480" aria-label="本次游戏的纪念明信片"></canvas>
+<button id="view-scene" class="secondary-button" style="margin-bottom:12px;width:100%">看看玩具屋现在的样子 ↗</button><div class="result-actions"><button id="replay" class="pixel-button">再手欠一次 <span aria-hidden="true">↻</span></button><button id="save-postcard" class="secondary-button">保存纪念卡 <span aria-hidden="true">↓</span></button></div>
+</dialog>
+<div id="sprite-bank" hidden aria-hidden="true"><button id="monster" tabindex="-1"><img src="monster.png" alt="" draggable="false"></button><button id="gacha" tabindex="-1"><img src="gacha.png" alt="" draggable="false"></button><button id="top" tabindex="-1"><img src="top.png" alt="" draggable="false"></button></div>
+<script src="toy-animation.js?v=chaos"></script><script src="scene-motion.js?v=motion2"></script><script src="game.js?v=motion2"></script><script type="module" src="top-3d.js?v=chaos"></script>
+</body>
+</html>
